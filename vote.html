@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vote for Coalitions - KUCSA 2025</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 40px 20px;
+      background-color: #f4f9ff;
+      color: #333;
+      text-align: center;
+    }
+
+    h1 {
+      color: #0047AB;
+      margin-bottom: 10px;
+    }
+
+    .tagline {
+      font-size: 14px;
+      color: #777;
+      margin-bottom: 30px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .login-form {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .login-form input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .login-form button {
+      background-color: #0047AB;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .login-form button:hover {
+      background-color: #003173;
+    }
+
+    .coalition-card {
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      padding: 20px;
+      max-width: 500px;
+      margin: 20px auto;
+      transition: 0.3s ease;
+    }
+
+    .coalition-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+
+    .coalition-name {
+      font-size: 22px;
+      font-weight: bold;
+      color: #002f6c;
+      margin-bottom: 10px;
+    }
+
+    .members {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      font-size: 15px;
+      margin-bottom: 20px;
+      color: #444;
+      text-align: left;
+    }
+
+    .member {
+      width: 48%;
+      margin-bottom: 10px;
+    }
+
+    .vote-btn {
+      background-color: #0047AB;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: 0.3s ease;
+    }
+
+    .vote-btn:hover {
+      background-color: #003173;
+    }
+
+    .vote-btn:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
+    }
+
+    .vote-count {
+      margin-top: 10px;
+      font-size: 18px;
+      color: #0047AB;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .coalition-card {
+        max-width: 100%;
+        margin: 20px 10px;
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 24px;
+        margin-bottom: 15px;
+      }
+
+      .tagline {
+        font-size: 12px;
+      }
+
+      .coalition-name {
+        font-size: 20px;
+      }
+
+      .members {
+        font-size: 14px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .member {
+        width: 100%;
+      }
+
+      .vote-btn {
+        padding: 10px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 20px;
+      }
+
+      .tagline {
+        font-size: 10px;
+      }
+
+      .vote-btn {
+        width: 100%;
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="login-section">
+    <h1>Login to Vote</h1>
+    <p class="tagline">Please log in with your details to vote for the coalitions</p>
+    <div class="login-form">
+      <input type="text" id="name" placeholder="Enter Your Name" required />
+      <input type="email" id="email" placeholder="Enter Your Email" required />
+      <input type="text" id="constituency" placeholder="Enter Your Constituency" required />
+      <button onclick="login()">Login</button>
+    </div>
+  </div>
+
+  <div class="container" id="vote-section" style="display:none;">
+    <h1>Vote for Your Favorite Coalition</h1>
+    <p class="tagline">Vote once for each coalition! </p>
+
+    <!-- Coalition 1 -->
+    <div class="coalition-card" id="coalition1">
+      <div class="coalition-name">Team KUCSA</div>
+      <div class="members">
+        <div class="member">President: Duke Mbusyo</div>
+        <div class="member">VP: Esther Kasee</div>
+        <div class="member">SG: David</div>
+        <div class="member">Treasurer: Faith </div>
+      </div>
+      <button class="vote-btn" id="vote-vision2025" onclick="voteAndRedirect('vision2025', 'https://forms.gle/rLfuKahdFaifQFku7')">Vote for Team Vision</button>
+    </div>
+
+    <!-- Coalition 2 -->
+    <div class="coalition-card" id="coalition2">
+      <div class="coalition-name">Harbinger Party</div>
+      <div class="members">
+        <div class="member">President: Kris</div>
+        <div class="member">VP: Cate</div>
+        <div class="member">SG: Cyrus</div>
+        <div class="member">Treasurer: Carol Nzilani</div>
+      </div>
+      <button class="vote-btn" id="vote-unityFront" onclick="voteAndRedirect('unityFront', 'https://forms.gle/eyxn58iZW8fkDtuk9')">Vote for Unity Front</button>
+    </div>
+
+    <!-- Coalition 3 -->
+    <div class="coalition-card" id="coalition3">
+      <div class="coalition-name">The Grand Coalition</div>
+      <div class="members">
+        <div class="member">President: Peter Karanja</div>
+        <div class="member">VP: Susan Nzioka</div>
+        <div class="member">SG: Robert Kamau</div>
+        <div class="member">Treasurer: Faith Wambua</div>
+      </div>
+      <button class="vote-btn" id="vote-newGeneration" onclick="voteAndRedirect('newGeneration', 'https://forms.gle/your-google-form-link-3')">Vote for The New Generation</button>
+    </div>
+
+    <!-- Coalition 4 -->
+    <div class="coalition-card" id="coalition4">
+      <div class="coalition-name">Progressive Alliance</div>
+      <div class="members">
+        <div class="member">President: John Mwangi</div>
+        <div class="member">VP: Esther Ochieng</div>
+        <div class="member">SG: Paul Gitau</div>
+        <div class="member">Treasurer: Linda Mueni</div>
+      </div>
+      <button class="vote-btn" id="vote-progressiveAlliance" onclick="voteAndRedirect('progressiveAlliance', 'https://forms.gle/your-google-form-link-4')">Vote for Progressive Alliance</button>
+    </div>
+
+    <!-- Coalition 5 -->
+    <div class="coalition-card" id="coalition5">
+      <div class="coalition-name">Forward Together</div>
+      <div class="members">
+        <div class="member">President: Joseph Karani</div>
+        <div class="member">VP: Alice Musyoka</div>
+        <div class="member">SG: Eric Wainaina</div>
+        <div class="member">Treasurer: Rose Ndungi</div>
+      </div>
+      <button class="vote-btn" id="vote-forwardTogether" onclick="voteAndRedirect('forwardTogether', 'https://forms.gle/your-google-form-link-5')">Vote for Forward Together</button>
+    </div>
+  </div>
+
+  <script>
+    // Function to handle login
+    function login() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const constituency = document.getElementById("constituency").value;
+
+      if (name && email && constituency) {
+        // Store user details in session
+        sessionStorage.setItem('name', name);
+        sessionStorage.setItem('email', email);
+        sessionStorage.setItem('constituency', constituency);
+
+        // Show the voting section and hide the login
+        document.getElementById("login-section").style.display = "none";
+        document.getElementById("vote-section").style.display = "block";
+      } else {
+        alert("Please fill in all fields.");
+      }
+    }
+
+    // Function to handle voting and redirect to Google Form
+    function voteAndRedirect(coalitionId, formLink) {
+      if (!sessionStorage.getItem('name') || !sessionStorage.getItem('email') || !sessionStorage.getItem('constituency')) {
+        alert("You must log in first to vote.");
+        return;
+      }
+
+      // Check if the coalition has already been voted for in this session
+      if (sessionStorage.getItem('voted')) {
+        alert('You have already voted in this session!');
+        return;
+      }
+
+      // Save that the user has voted in this session
+      sessionStorage.setItem('voted', 'true');
+
+      // Disable all vote buttons
+      disableAllVotes();
+
+      // Redirect to the Google Form
+      window.location.href = formLink;
+    }
+
+    // Function to disable all vote buttons
+    function disableAllVotes() {
+      const voteButtons = document.querySelectorAll('.vote-btn');
+      voteButtons.forEach(button => {
+        button.disabled = true;
+      });
+    }
+
+
+     // Function to handle login
+     function handleLogin(event) {
+      event.preventDefault();
+
+      // Check if the user is already logged in
+      if (localStorage.getItem('isLoggedIn') === 'true') {
+        document.getElementById("login-message").textContent = "You are already logged in.";
+        return;
+      }
+
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const constituency = document.getElementById("constituency").value;
+
+      // Store user details and set login status in localStorage
+      localStorage.setItem('userName', name);
+      localStorage.setItem('userEmail', email);
+      localStorage.setItem('userConstituency', constituency);
+      localStorage.setItem('isLoggedIn', 'true');
+
+      // Hide the login section and show the voting section
+      document.getElementById("login-section").style.display = "none";
+      document.getElementById("vote-section").style.display = "block";
+    }
+
+    // Function to handle logout
+    function handleLogout() {
+      // Clear user details and reset login status in localStorage
+      localStorage.removeItem('userName');
+      localStorage.removeItem('userEmail');
+      localStorage.removeItem('userConstituency');
+      localStorage.setItem('isLoggedIn', 'false');
+
+      // Hide the voting section and show the login section
+      document.getElementById("vote-section").style.display = "none";
+      document.getElementById("login-section").style.display = "block";
+    }
+
+    // Function to handle voting
+    function handleVote(coalitionId) {
+      // Ensure the user is logged in
+      if (localStorage.getItem('isLoggedIn') !== 'true') {
+        alert("Please log in to vote.");
+        return;
+      }
+
+      // Process the vote (e.g., send data to the server)
+      // For demonstration, we'll just alert the coalition ID
+      alert("Voted for " + coalitionId);
+
+      // Optionally, redirect to a Google Form or another page
+      // window.location.href = 'https://forms.gle/your-google-form-link';
+    }
+
+    // Check login status on page load
+    window.onload = function() {
+      if (localStorage.getItem('isLoggedIn') === 'true') {
+        // Hide the login section and show the voting section
+        document.getElementById("login-section").style.display = "none";
+        document.getElementById("vote-section").style.display = "block";
+      }
+    };
+  </script>
+
+</body>
+</html>
