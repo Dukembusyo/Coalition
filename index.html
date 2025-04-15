@@ -179,18 +179,22 @@
 <body>
 
   <div class="container" id="login-section"
-    <img></img>
 
-    <h1>Login to Vote</h1>
-    <h2>Please log in using your details to vote for the coalitions</h2>
-    <p class="tagline">NOTE : ONLY KUCSA REGISTERED MEMBERS ARE ALLOWED TO VOTE</p>
-    <div class="login-form">
-      <input type="text" id="name" placeholder="Enter Your Name" required />
-      <input type="email" id="email" placeholder="Enter Your Email" required />
-      <input type="text" id="constituency" placeholder="Enter Your Constituency" required />
-      <button onclick="login()">Login</button>
+    <div class="container" id="login-section">
+      <h1>Login to Vote</h1>
+      <h2>Please log in with your details to vote for the coalitions</h2>
+      <p class="tagline">NOTE : ONLY KUCSA REGISTERED MEMBERS ARE ALLOWED TO VOTE</p>
+      <p><strong>NOTE:</strong> Use the <u>phone number</u> you used to register as a member (e.g., 0712345678, +254712345678, 254712345678).</p>
+      <p id="errorMessage" style="color:red;"></p>
+      <p id="successMessage" style="color:green;"></p>
+      <div class="login-form">
+        <input type="text" id="phone" placeholder="Enter Your Phone Number" required />
+        <input type="text" id="email" placeholder="Enter Your Email" />
+        <input type="text" id="name" placeholder="Enter Your Full Name" />
+        <input type="text" id="constituency" placeholder="Enter Your Constituency" required />
+        <button onclick="login()">Login</button>
+      </div>
     </div>
-  </div>
 
   <div class="container" id="vote-section" style="display:none;">
     <h1>KUCSA DECIDES 2025</h1>
@@ -258,25 +262,64 @@
   </div>
 
   <script>
-// Function to handle login
-function handleLogin() {
-  const name = document.getElementById("name").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const constituency = document.getElementById("constituency").value.trim();
+ // Simulating a long list of valid phone numbers (you can replace with 3000+ real ones)
+ const validPhones = new Set([
+    "0712345678", "+254712345678", "254712345678", "0798765432", "+254798765432", "254798765432"
+    // Add up to 3000+ more here...
+  ]);
 
-  if (name && email && constituency) {
-    // Store user details in session
+  let hasLoggedIn = false;
+
+  function normalizePhone(phone) {
+    phone = phone.replace(/\s+/g, '');
+    if (phone.startsWith("07")) return phone;
+    if (phone.startsWith("+254")) return "0" + phone.slice(4);
+    if (phone.startsWith("254")) return "0" + phone.slice(3);
+    return phone;
+  }
+
+  function login() {
+    const phoneRaw = document.getElementById('phone').value.trim();
+    const phone = normalizePhone(phoneRaw);
+    const constituency = document.getElementById('constituency').value.trim();
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const errorMessage = document.getElementById('errorMessage');
+    const successMessage = document.getElementById('successMessage');
+
+    errorMessage.textContent = '';
+    successMessage.textContent = '';
+
+    const phonePattern = /^0[17]\d{8}$/;
+    if (!phonePattern.test(phone)) {
+      errorMessage.textContent = "Invalid phone number. Accepted formats: 0712345678, 254712345678, +254712345678";
+      return;
+    }
+
+    if (!validPhones.has(phone)) {
+      errorMessage.textContent = "Phone number not recognized. You must be a registered KUCSA member.";
+      return;
+    }
+
+    if (hasLoggedIn || sessionStorage.getItem('hasLoggedIn') === 'true') {
+      errorMessage.textContent = "You have already logged in.";
+      return;
+    }
+
+    hasLoggedIn = true;
+    sessionStorage.setItem('hasLoggedIn', 'true');
+    sessionStorage.setItem('phone', phone);
+    sessionStorage.setItem('constituency', constituency);
     sessionStorage.setItem('name', name);
     sessionStorage.setItem('email', email);
-    sessionStorage.setItem('constituency', constituency);
 
-    // Show the voting section and hide the login
-    document.getElementById("login-section").style.display = "none";
-    document.getElementById("vote-section").style.display = "block";
-  } else {
-    alert("Please fill in all fields.");
+    successMessage.textContent = "Login successful. Redirecting...";
+
+    setTimeout(() => {
+      document.getElementById('login-section').style.display = 'none';
+      document.getElementById('vote-section').style.display = 'block';
+    }, 1000);
   }
-}
 
     // Function to handle voting and redirect to Google Form
     function voteAndRedirect(coalitionId, formLink) {
