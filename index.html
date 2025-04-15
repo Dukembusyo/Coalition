@@ -258,24 +258,25 @@
   </div>
 
   <script>
-    // Function to handle login () {
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
-      const constituency = document.getElementById("constituency").value;
+// Function to handle login
+function handleLogin() {
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const constituency = document.getElementById("constituency").value.trim();
 
-      if (name && email && constituency) {
-        // Store user details in session
-        sessionStorage.setItem('name', name);
-        sessionStorage.setItem('email', email);
-        sessionStorage.setItem('constituency', constituency);
+  if (name && email && constituency) {
+    // Store user details in session
+    sessionStorage.setItem('name', name);
+    sessionStorage.setItem('email', email);
+    sessionStorage.setItem('constituency', constituency);
 
-        // Show the voting section and hide the login
-        document.getElementById("login-section").style.display = "none";
-        document.getElementById("vote-section").style.display = "block";
-      } else {
-        alert("Please fill in all fields.");
-      }
-    }
+    // Show the voting section and hide the login
+    document.getElementById("login-section").style.display = "none";
+    document.getElementById("vote-section").style.display = "block";
+  } else {
+    alert("Please fill in all fields.");
+  }
+}
 
     // Function to handle voting and redirect to Google Form
     function voteAndRedirect(coalitionId, formLink) {
