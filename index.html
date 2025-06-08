@@ -174,11 +174,35 @@
         padding: 12px;
       }
     }
+
+
+
+
+
+     #countdownTimer {
+    color: #2c3e50;
+    margin-bottom: 10px;
+  }
+
+  .login-form input:disabled {
+    background-color: #f3f3f3;
+  }
+
+  .login-form button:disabled {
+    background-color: #ccc;
+  }
   </style>
 </head>
 <body>
 
   <div class="container" id="login-section">
+
+
+
+    <h3 id="countdownTitle">Countdown to Voting</h3>
+<p id="countdownTimer" style="font-size: 1.3rem; font-weight: bold;"></p>
+
+
     <h1>Login to Vote</h1>
     <h2>NOTE: YOU CAN ONLY SIGN IN ONCE</h2>
     <h2>Please log in with your details to vote for the coalitions</h2>
@@ -508,6 +532,74 @@
         document.getElementById('vote-section').style.display = 'block';
       }
     };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// elements
+
+
+    const loginButton = document.querySelector(".login-form button");
+  const inputs = document.querySelectorAll(".login-form input");
+
+  const countdownTitle = document.getElementById("countdownTitle");
+  const countdownTimer = document.getElementById("countdownTimer");
+
+  const startTime = new Date("June 12, 2025 08:00:00").getTime();
+  const endTime = new Date("June 12, 2025 13:00:00").getTime();
+
+  function updateLoginCountdown() {
+    const now = new Date().getTime();
+
+    if (now < startTime) {
+      const timeLeft = startTime - now;
+      countdownTitle.textContent = "Voting starts in:";
+      displayCountdown(timeLeft);
+      setLoginState(false);
+    } else if (now >= startTime && now < endTime) {
+      const timeLeft = endTime - now;
+      countdownTitle.textContent = "Voting is OPEN — Closes in:";
+      displayCountdown(timeLeft);
+      setLoginState(true);
+    } else {
+      countdownTitle.textContent = "Voting has ended.";
+      countdownTimer.textContent = "";
+      setLoginState(false);
+      document.getElementById("login-section").innerHTML += `<h3 style="color:red;">Voting is now closed. You can no longer sign in.</h3>`;
+    }
+  }
+
+  function displayCountdown(ms) {
+    const h = Math.floor(ms / (1000 * 60 * 60));
+    const m = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((ms % (1000 * 60)) / 1000);
+    countdownTimer.textContent = `${pad(h)}h ${pad(m)}m ${pad(s)}s`;
+  }
+
+  function pad(n) {
+    return n < 10 ? "0" + n : n;
+  }
+
+  function setLoginState(enabled) {
+    inputs.forEach(input => input.disabled = !enabled);
+    loginButton.disabled = !enabled;
+    loginButton.style.opacity = enabled ? "1" : "0.5";
+    loginButton.style.cursor = enabled ? "pointer" : "not-allowed";
+  }
+
+  const interval = setInterval(updateLoginCountdown, 1000);
+  updateLoginCountdown(); // Initial call
   </script>
 </body>
 </html>
