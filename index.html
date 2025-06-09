@@ -118,12 +118,34 @@
       cursor: not-allowed;
     }
 
-    #formContainer {
-    margin-top: 400px;
-      margin-top: 30px;
-      display: none;
-      margin-top:-800px;
-    }
+#formContainer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  background: white;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  display: none;
+  width: 90%;
+  max-width: 800px;
+  height: 80vh;
+  overflow: auto;
+}
+
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9990;
+  display: none;
+}
+
 
     /* Responsive Design */
     @media (max-width: 768px) {
@@ -273,8 +295,12 @@
     </div>
 
     <!-- Embedded Google Form -->
+     <div id="overlay"></div>
+
     <div id="formContainer">
-      <iframe id="embeddedForm" src="" width="70%" height="700" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+      <iframe id="embeddedForm" src="" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    <button onclick="closeForm()" style="position:absolute; top:10px; right:10px; background:red; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">X</button>
+
     </div>
   </div>
 
@@ -561,7 +587,7 @@
   const countdownTimer = document.getElementById("countdownTimer");
 
   const startTime = new Date("June 9, 2025 23:00:00").getTime();
-  const endTime = new Date("June 9, 2025 23:30:00").getTime();
+  const endTime = new Date("June 9, 2025 23:40:00").getTime();
 
   function updateLoginCountdown() {
     const now = new Date().getTime();
@@ -604,6 +630,44 @@
 
   const interval = setInterval(updateLoginCountdown, 1000);
   updateLoginCountdown(); // Initial call
+
+
+
+
+
+
+
+function showForm(formLink) {
+  if (sessionStorage.getItem('voted')) {
+    alert('You have already voted.');
+    return;
+  }
+
+  document.getElementById('formContainer').style.display = 'block';
+  document.getElementById('overlay').style.display = 'block';
+  document.getElementById('embeddedForm').src = formLink;
+  sessionStorage.setItem('voted', 'true');
+  disableAllVotes();
+}
+
+function closeForm() {
+  document.getElementById('formContainer').style.display = 'none';
+  document.getElementById('overlay').style.display = 'none';
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   </script>
 </body>
 </html>
