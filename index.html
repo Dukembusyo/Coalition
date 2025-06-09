@@ -486,10 +486,13 @@
       }
 
       // Optionally validate against validPhones
-      // if (!validPhones.has(phone)) {
-      //   errorMessage.textContent = "Not a registered KUCSA member.";
-      //   return;
-      // }
+      if (!validPhones.has(phone)) {
+        errorMessage.textContent = "Not a registered KUCSA member.";
+        return;
+      }
+
+
+
 
       if (sessionStorage.getItem('hasLoggedIn') === 'true') {
         errorMessage.textContent = "You have already logged in.";
@@ -556,8 +559,8 @@
   const countdownTitle = document.getElementById("countdownTitle");
   const countdownTimer = document.getElementById("countdownTimer");
 
-  const startTime = new Date("June 12, 2025 08:00:00").getTime();
-  const endTime = new Date("June 12, 2025 13:00:00").getTime();
+  const startTime = new Date("June 9, 2025 23:00:00").getTime();
+  const endTime = new Date("June 9, 2025 23:30:00").getTime();
 
   function updateLoginCountdown() {
     const now = new Date().getTime();
